@@ -1,21 +1,14 @@
-
 import 'package:flutter/material.dart';
 
-import '../blocs/package_integration_bloc/package_integration_state.dart';
-
-
+import '../blocs/package_integration/package_integration_state.dart';
 
 class IntegrationStatusWidget extends StatelessWidget {
   final PackageIntegrationState state;
 
-  const IntegrationStatusWidget({
-    super.key,
-    required this.state,
-  });
+  const IntegrationStatusWidget({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
-    // Return the appropriate UI based on state.status
     switch (state.status) {
       case PackageIntegrationStatus.loading:
       case PackageIntegrationStatus.integrating:
@@ -111,7 +104,10 @@ class IntegrationStatusWidget extends StatelessWidget {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Text(state.output!, style: const TextStyle(fontFamily: 'monospace')),
+                child: Text(
+                  state.output!,
+                  style: const TextStyle(fontFamily: 'monospace'),
+                ),
               ),
             ],
           ],

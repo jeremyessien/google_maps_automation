@@ -7,7 +7,7 @@ import 'package:dev_task/presentation/screens/project_selection/project_selectio
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'data/repositories/project_repo.dart';
+import 'data/repositories/project_repository.dart';
 
 void main() {
   runApp(MyApp());

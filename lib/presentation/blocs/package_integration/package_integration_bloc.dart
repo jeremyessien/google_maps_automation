@@ -1,4 +1,4 @@
-// lib/presentation/bloc/package_integration/package_integration_bloc.dart
+// lib/presentation/bloc/package_integration/package_integration.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/repositories/i_package_repository.dart';

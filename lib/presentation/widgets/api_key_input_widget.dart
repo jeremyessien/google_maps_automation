@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
 
-import '../blocs/api_key_bloc/api_key_state.dart';
-
-
+import '../blocs/api_key/api_key_state.dart';
 
 class ApiKeyInputWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -30,12 +27,14 @@ class ApiKeyInputWidget extends StatelessWidget {
             labelText: 'Google Maps API Key',
             hintText: 'Enter your Google Maps API key',
             border: const OutlineInputBorder(),
-            errorText: state.status == ApiKeyStatus.invalid
-                ? state.errorMessage
-                : null,
-            suffixIcon: state.status == ApiKeyStatus.valid
-                ? const Icon(Icons.check_circle, color: Colors.green)
-                : null,
+            errorText:
+                state.status == ApiKeyStatus.invalid
+                    ? state.errorMessage
+                    : null,
+            suffixIcon:
+                state.status == ApiKeyStatus.valid
+                    ? const Icon(Icons.check_circle, color: Colors.green)
+                    : null,
           ),
           onChanged: onChanged,
           onSubmitted: onSubmitted,
@@ -45,7 +44,6 @@ class ApiKeyInputWidget extends StatelessWidget {
           'You can get a Google Maps API key from the Google Cloud Console',
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-
 
         if (state.status == ApiKeyStatus.initial ||
             state.status == ApiKeyStatus.invalid)

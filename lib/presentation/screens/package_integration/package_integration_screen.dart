@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
-import '../../blocs/package_integration_bloc/package_integration_bloc.dart';
-import '../../blocs/package_integration_bloc/package_integration_event.dart';
-import '../../blocs/package_integration_bloc/package_integration_state.dart';
+import '../../blocs/package_integration/package_integration_bloc.dart';
+import '../../blocs/package_integration/package_integration_event.dart';
+import '../../blocs/package_integration/package_integration_state.dart';
 import '../../widgets/integration_status_widget.dart';
 
 class PackageIntegrationScreen extends StatelessWidget {

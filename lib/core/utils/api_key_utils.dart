@@ -28,7 +28,7 @@ class ApiKeyUtils {
       return content.contains('com.google.android.geo.API_KEY') &&
           !content.contains('YOUR_API_KEY_HERE');
     } catch (e) {
-      print('Error checking for API key in AndroidManifest: $e');
+      log('Error checking for API key in AndroidManifest: $e');
       return false;
     }
   }

@@ -5,19 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
-import '../../blocs/api_key_bloc/api_key_bloc.dart';
-import '../../blocs/api_key_bloc/api_key_event.dart';
-import '../../blocs/api_key_bloc/api_key_state.dart';
+import '../../blocs/api_key/api_key_bloc.dart';
+import '../../blocs/api_key/api_key_event.dart';
+import '../../blocs/api_key/api_key_state.dart';
 import '../../widgets/api_key_input_widget.dart';
-
 
 class ApiKeyScreen extends StatefulWidget {
   final Project project;
 
-  const ApiKeyScreen({
-    super.key,
-    required this.project,
-  });
+  const ApiKeyScreen({super.key, required this.project});
 
   @override
   State<ApiKeyScreen> createState() => _ApiKeyScreenState();
@@ -45,15 +41,12 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Maps API Key'),
-      ),
+      appBar: AppBar(title: const Text('Google Maps API Key')),
       body: BlocConsumer<ApiKeyBloc, ApiKeyState>(
         listener: (context, state) {
           if (state.status == ApiKeyStatus.valid ||
               state.status == ApiKeyStatus.skipped ||
               state.status == ApiKeyStatus.alreadyConfigured) {
-
             navigationService.navigateTo(
               RouteConstants.platformConfiguration,
               arguments: {
@@ -81,11 +74,9 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
                 ),
                 const SizedBox(height: 24),
 
-
                 if (state.status == ApiKeyStatus.loading ||
                     state.status == ApiKeyStatus.checking)
                   const Center(child: CircularProgressIndicator.adaptive()),
-
 
                 if (state.status == ApiKeyStatus.alreadyConfigured)
                   Column(
@@ -150,13 +141,14 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
                         child: const Text('Skip (Not Recommended)'),
                       ),
                       ElevatedButton(
-                        onPressed: apiKeyController.text.isNotEmpty
-                            ? () {
-                          context.read<ApiKeyBloc>().add(
-                            ValidateApiKey(apiKeyController.text),
-                          );
-                        }
-                            : null,
+                        onPressed:
+                            apiKeyController.text.isNotEmpty
+                                ? () {
+                                  context.read<ApiKeyBloc>().add(
+                                    ValidateApiKey(apiKeyController.text),
+                                  );
+                                }
+                                : null,
                         child: const Text('Validate & Continue'),
                       ),
                     ],
