@@ -1,28 +1,25 @@
-
+import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
 import '../../blocs/package_integration_bloc/package_integration_bloc.dart';
 import '../../blocs/package_integration_bloc/package_integration_event.dart';
 import '../../blocs/package_integration_bloc/package_integration_state.dart';
 import '../../widgets/integration_status_widget.dart';
 
-
 class PackageIntegrationScreen extends StatelessWidget {
   final Project project;
 
-  const PackageIntegrationScreen({
-    super.key,
-    required this.project,
-  });
+  PackageIntegrationScreen({super.key, required this.project});
+
+  final NavigationService navigationService = NavigationService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Package Integration'),
-      ),
+      appBar: AppBar(title: const Text('Package Integration')),
       body: BlocConsumer<PackageIntegrationBloc, PackageIntegrationState>(
         listener: (context, state) {
           if (state.status == PackageIntegrationStatus.success) {
@@ -32,13 +29,12 @@ class PackageIntegrationScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ),
             );
-
-            // Navigate to API Key page after successful integration
-            // Navigator.of(context).push(...);
           } else if (state.status == PackageIntegrationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Package integration failed'),
+                content: Text(
+                  state.errorMessage ?? 'Package integration failed',
+                ),
                 backgroundColor: Colors.red,
               ),
             );
@@ -50,7 +46,6 @@ class PackageIntegrationScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Project information
                 const Text(
                   'Project:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -58,14 +53,12 @@ class PackageIntegrationScreen extends StatelessWidget {
                 Text(project.directoryPath),
                 const SizedBox(height: 16),
 
-                // Package to integrate
                 const Text(
                   'Package to integrate:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const Text('google_maps_flutter'),
                 const SizedBox(height: 24),
-
 
                 if (state.status == PackageIntegrationStatus.initial ||
                     state.status == PackageIntegrationStatus.failure)
@@ -86,17 +79,17 @@ class PackageIntegrationScreen extends StatelessWidget {
 
                 IntegrationStatusWidget(state: state),
 
-                // Skip button (for already integrated packages)
                 if (state.status == PackageIntegrationStatus.alreadyIntegrated)
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to API Key page
-                      // Navigator.of(context).push(...);
+                      navigationService.navigateTo(
+                        RouteConstants.apiKeyManagement,
+                        arguments: project,
+                      );
                     },
                     child: const Text('Continue to API Key'),
                   ),
 
-                // Next button (for successfully integrated packages)
                 if (state.status == PackageIntegrationStatus.success)
                   ElevatedButton(
                     onPressed: () {
