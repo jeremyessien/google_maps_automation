@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/repositories/project_repository.dart';
+import '../../../domain/repositories/i_project_repository.dart';
 import 'project_selection_event.dart';
 import 'project_selection_state.dart';
 

@@ -1,7 +1,7 @@
 
 import '../../core/utils/file_utils.dart';
 import '../../domain/entities/projects.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../../domain/repositories/i_project_repository.dart';
 import '../models/project_model.dart';
 
 class ProjectRepository implements IProjectRepository {
