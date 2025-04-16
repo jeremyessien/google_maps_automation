@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/repositories/api_key_repository.dart';
+import '../../data/repositories/demo_integration_repository.dart';
 import '../../data/repositories/package_integration_repository.dart';
 import '../../data/repositories/project_repository.dart';
 import '../../domain/entities/projects.dart';
 import '../../presentation/blocs/api_key/api_key_bloc.dart';
+import '../../presentation/blocs/demo_integration/demo_integration_bloc.dart';
 import '../../presentation/blocs/package_integration/package_integration_bloc.dart';
 
 import '../../presentation/blocs/project_selection/project_selection_bloc.dart';
 import '../../presentation/screens/api_key/api_key_screen.dart';
+import '../../presentation/screens/demo_integration/demo_integration_screen.dart';
+import '../../presentation/screens/demo_integration/integration_result_screen.dart';
 import '../../presentation/screens/package_integration/package_integration_screen.dart';
 import '../../presentation/screens/project_selection/project_selection_screen.dart';
 import '../constants/route_constants.dart';
@@ -65,6 +69,34 @@ class RouteGenerator {
                       (_) => ApiKeyBloc(apiKeyRepository: ApiKeyRepository()),
                   child: ApiKeyScreen(project: args['project']),
                 ),
+          );
+        }
+        return errorRoute();
+
+
+      case RouteConstants.demoIntegration:
+        if (args is Project) {
+          return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => DemoIntegrationBloc(
+                demoIntegrationRepository: DemoIntegrationRepository(),
+              ),
+              child: DemoIntegrationScreen(project: args),
+            ),
+          );
+        }
+        return errorRoute();
+
+      case RouteConstants.integrationResult:
+        if (args is Map) {
+          final project = args['project'] as Project;
+          final filePath = args['filePath'] as String?;
+
+          return MaterialPageRoute(
+            builder: (_) => IntegrationResultScreen(
+              project: project,
+              filePath: filePath,
+            ),
           );
         }
         return errorRoute();

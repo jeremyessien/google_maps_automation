@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Package Integrator',
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigationService.navigatorKey,
       initialRoute: RouteConstants.projectSelection,
       onGenerateRoute: RouteGenerator.generateRoute,
