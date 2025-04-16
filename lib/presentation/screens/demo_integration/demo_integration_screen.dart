@@ -1,40 +1,34 @@
-
 import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
+import '../../../main.dart';
 import '../../blocs/demo_integration/demo_integration_bloc.dart';
 import '../../blocs/demo_integration/demo_integration_event.dart';
 import '../../blocs/demo_integration/demo_integration_state.dart';
+import '../../widgets/action_button.dart';
 import '../../widgets/demo_integration_status_widget.dart';
-
-
 
 class DemoIntegrationScreen extends StatefulWidget {
   final Project project;
 
-  const DemoIntegrationScreen({
-    super.key,
-    required this.project,
-  });
+  const DemoIntegrationScreen({super.key, required this.project});
 
   @override
   State<DemoIntegrationScreen> createState() => _DemoIntegrationScreenState();
 }
 
 class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
-
-  final NavigationService navigationService = NavigationService();
   @override
   void initState() {
     super.initState();
-    // Start integration automatically
-    _startIntegration();
+
+    startIntegration();
   }
 
-  void _startIntegration() {
+  void startIntegration() {
     context.read<DemoIntegrationBloc>().add(
       IntegrateGoogleMapsExample(widget.project.directoryPath),
     );
@@ -43,15 +37,14 @@ class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Maps Example'),
-      ),
+      appBar: AppBar(title: const Text('Google Maps Example')),
       body: BlocConsumer<DemoIntegrationBloc, DemoIntegrationState>(
         listener: (context, state) {
           if (state.status == DemoIntegrationStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Google Maps example added successfully!'),
+                behavior: SnackBarBehavior.floating,
+                content: Center(child: Text('Google Maps example added successfully!')),
                 backgroundColor: Colors.green,
               ),
             );
@@ -89,15 +82,15 @@ class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
                   children: [
                     // Retry button for failures
                     if (state.status == DemoIntegrationStatus.failure)
-                      ElevatedButton(
-                        onPressed: _startIntegration,
-                        child: const Text('Retry Integration'),
+                      ActionButton(
+                        onTap: startIntegration,
+                        title: 'Retry Integration',
                       ),
 
                     // Finish button
                     if (state.status == DemoIntegrationStatus.success)
-                      ElevatedButton(
-                        onPressed: () {
+                      ActionButton(
+                        onTap: () {
                           navigationService.navigateTo(
                             RouteConstants.integrationResult,
                             arguments: {
@@ -106,10 +99,11 @@ class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
                             },
                           );
                         },
-                        child: const Text('Finish Integration'),
+                        title: 'Finish Integration',
                       ),
                   ],
                 ),
+                SizedBox(height: 20,)
               ],
             ),
           );

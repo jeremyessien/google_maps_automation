@@ -21,23 +21,30 @@ class ApiKeyInputWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: 'Google Maps API Key',
-            hintText: 'Enter your Google Maps API key',
-            border: const OutlineInputBorder(),
-            errorText:
-                state.status == ApiKeyStatus.invalid
-                    ? state.errorMessage
-                    : null,
-            suffixIcon:
-                state.status == ApiKeyStatus.valid
-                    ? const Icon(Icons.check_circle, color: Colors.green)
-                    : null,
+        SizedBox(
+          height: 50,
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: 'Google Maps API Key',
+              hintText: 'Enter your Google Maps API key',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              labelStyle: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              errorText:
+                  state.status == ApiKeyStatus.invalid
+                      ? state.errorMessage
+                      : null,
+              suffixIcon:
+                  state.status == ApiKeyStatus.valid
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : null,
+            ),
+            onChanged: onChanged,
+            onSubmitted: onSubmitted,
           ),
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
         ),
         const SizedBox(height: 8),
         const Text(

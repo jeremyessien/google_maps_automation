@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
+import '../../../main.dart';
 import '../../blocs/platform_config/platform_config_bloc.dart';
 import '../../blocs/platform_config/platform_config_event.dart';
 import '../../blocs/platform_config/platform_config_state.dart';
+import '../../widgets/action_button.dart';
 import '../../widgets/platform_status_widget.dart';
 
 
@@ -29,7 +31,7 @@ class PlatformConfigScreen extends StatefulWidget {
 }
 
 class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
-  final NavigationService navigationService = NavigationService();
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +62,8 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
           if (state.isFullyConfigured) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Platforms configured successfully!'),
+                behavior: SnackBarBehavior.floating,
+                content: Center(child: Text('Platforms configured successfully!')),
                 backgroundColor: Colors.green,
               ),
             );
@@ -114,24 +117,27 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
                   children: [
 
                     if (state.status == PlatformConfigStatus.failure)
-                      ElevatedButton(
-                        onPressed: startConfiguration,
-                        child: const Text('Retry Configuration'),
+                      ActionButton(
+                        onTap: startConfiguration,
+                        title: 'Retry Configuration',
                       ),
 
 
                     if (state.isFullyConfigured)
-                      ElevatedButton(
-                        onPressed: () {
+                      ActionButton(
+                        width: 250,
+                        onTap: () {
                           navigationService.navigateTo(
                             RouteConstants.demoIntegration,
                             arguments: widget.project,
                           );
                         },
-                        child: const Text('Continue to Demo Integration'),
+                        title: 'Continue to Demo Integration',
                       ),
+
                   ],
                 ),
+                SizedBox(height: 20,),
               ],
             ),
           );

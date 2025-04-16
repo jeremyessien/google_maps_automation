@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
+
+import 'package:flutter/foundation.dart';
 
 class DemoIntegrationUtils {
   static Future<String?> findMainDartFile(String projectPath) async {
@@ -25,7 +26,7 @@ class DemoIntegrationUtils {
           }
         }
       } catch (e) {
-        log('Error searching for main.dart: $e');
+        debugPrint('Error searching for main.dart: $e');
       }
     }
 
@@ -80,7 +81,7 @@ class _GoogleMapsExampleState extends State<GoogleMapsExample> {
       await file.writeAsString(codeContent);
       return filePath;
     } catch (e) {
-      log('Error creating maps example file: $e');
+      debugPrint('Error creating maps example file: $e');
       return null;
     }
   }
@@ -147,7 +148,7 @@ class _GoogleMapsExampleState extends State<GoogleMapsExample> {
       await mainFile.writeAsString(content);
       return true;
     } catch (e) {
-      log('Error updating main.dart: $e');
+      debugPrint('Error updating main.dart: $e');
       return false;
     }
   }
@@ -171,7 +172,7 @@ class _GoogleMapsExampleState extends State<GoogleMapsExample> {
 
       return 'app';
     } catch (e) {
-      log('Error getting package name: $e');
+      debugPrint('Error getting package name: $e');
       return 'app';
     }
   }

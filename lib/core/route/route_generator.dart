@@ -10,13 +10,16 @@ import '../../presentation/blocs/api_key/api_key_bloc.dart';
 import '../../presentation/blocs/demo_integration/demo_integration_bloc.dart';
 import '../../presentation/blocs/package_integration/package_integration_bloc.dart';
 
+import '../../presentation/blocs/platform_config/platform_config_bloc.dart';
 import '../../presentation/blocs/project_selection/project_selection_bloc.dart';
 import '../../presentation/screens/api_key/api_key_screen.dart';
 import '../../presentation/screens/demo_integration/demo_integration_screen.dart';
 import '../../presentation/screens/demo_integration/integration_result_screen.dart';
 import '../../presentation/screens/package_integration/package_integration_screen.dart';
+import '../../presentation/screens/platform_config/platform_config_screen.dart';
 import '../../presentation/screens/project_selection/project_selection_screen.dart';
 import '../constants/route_constants.dart';
+import '../factories/repository_factory.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -30,7 +33,7 @@ class RouteGenerator {
               (_) => BlocProvider(
                 create:
                     (_) => ProjectSelectionBloc(
-                      projectRepository: ProjectRepository(),
+                      projectRepository: RepositoryFactory.getProjectRepository(),
                     ),
                 child: ProjectSelectionScreen(),
               ),
@@ -44,7 +47,7 @@ class RouteGenerator {
                   create:
                       (_) => PackageIntegrationBloc(
                         packageIntegrationRepository:
-                            PackageIntegrationRepository(),
+                            RepositoryFactory.getPackageIntegrationRepository(),
                       ),
                   child: PackageIntegrationScreen(project: args),
                 ),
@@ -57,7 +60,7 @@ class RouteGenerator {
             builder:
                 (_) => BlocProvider(
                   create:
-                      (_) => ApiKeyBloc(apiKeyRepository: ApiKeyRepository()),
+                      (_) => ApiKeyBloc(apiKeyRepository: RepositoryFactory.getApiKeyRepository()),
                   child: ApiKeyScreen(project: args),
                 ),
           );
@@ -66,7 +69,7 @@ class RouteGenerator {
             builder:
                 (_) => BlocProvider(
                   create:
-                      (_) => ApiKeyBloc(apiKeyRepository: ApiKeyRepository()),
+                      (_) => ApiKeyBloc(apiKeyRepository: RepositoryFactory.getApiKeyRepository()),
                   child: ApiKeyScreen(project: args['project']),
                 ),
           );
@@ -79,7 +82,7 @@ class RouteGenerator {
           return MaterialPageRoute(
             builder: (_) => BlocProvider(
               create: (_) => DemoIntegrationBloc(
-                demoIntegrationRepository: DemoIntegrationRepository(),
+                demoIntegrationRepository: RepositoryFactory.getDemoIntegrationRepository(),
               ),
               child: DemoIntegrationScreen(project: args),
             ),
@@ -101,6 +104,22 @@ class RouteGenerator {
         }
         return errorRoute();
 
+      case RouteConstants.platformConfiguration:
+        if (args is Map) {
+          return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => PlatformConfigBloc(
+                platformConfigRepository: RepositoryFactory.getPlatformConfigRepository(),
+              ),
+              child: PlatformConfigScreen(
+                project: args['project'] as Project,
+                apiKey: args['apiKey'] as String?,
+                isApiKeySkipped: args['isSkipped'] as bool? ?? false,
+              ),
+            ),
+          );
+        }
+        return errorRoute();
       default:
         return errorRoute();
     }

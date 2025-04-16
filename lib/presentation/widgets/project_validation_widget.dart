@@ -1,4 +1,7 @@
 // lib/presentation/widgets/project_validation_widget.dart
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../blocs/project_selection/project_selection_state.dart';
@@ -35,11 +38,11 @@ class ProjectValidationWidget extends StatelessWidget {
             ),
             Text(state.directoryPath ?? ''),
             const SizedBox(height: 8),
-            const Row(
+            Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green),
-                SizedBox(width: 8),
-                Text(
+                Platform.isAndroid ? Icon(Icons.check_circle_sharp, color: Colors.green) : Icon(CupertinoIcons.checkmark_alt_circle_fill, color: Colors.green,),
+                const SizedBox(width: 8),
+                const Text(
                   'Valid Flutter Project',
                   style: TextStyle(color: Colors.green),
                 ),
