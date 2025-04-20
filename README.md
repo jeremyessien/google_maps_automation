@@ -108,6 +108,7 @@ demoModeService.enableDemoMode();
 
 runApp(MyApp());
 }
+```
 
 ## 🐛 Issues and Support
 
