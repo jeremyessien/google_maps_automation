@@ -30,7 +30,7 @@ A desktop utility that automates the integration of Google Maps into existing Fl
 1. Clone this repository
 2. Navigate to the project directory
 3. Run `flutter pub get` to install dependencies
-4. Build and run on macOS: 'flutter build macos'
+4. Build and run on macOS: `flutter build macos`
 
 ## 📝 How to Use
 
@@ -114,12 +114,4 @@ runApp(MyApp());
 
 Found a bug or have a feature request? Please file an issue on the GitHub repository.
 
-## 📄 License Options
 
-Common open-source licenses for tools like this include:
-
-- MIT License: Simple and permissive
-- Apache License 2.0: Good for commercial use with patent protection
-- GNU GPL v3: Ensures derivative works remain open source
-
-*Select a license that matches your intentions for the project.*
