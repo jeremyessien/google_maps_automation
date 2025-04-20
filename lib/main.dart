@@ -1,4 +1,3 @@
-
 import 'package:dev_task/core/constants/route_constants.dart';
 import 'package:dev_task/core/factories/repository_factory.dart';
 import 'package:dev_task/core/route/route_generator.dart';
@@ -16,8 +15,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +28,9 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
       home: BlocProvider(
         create:
-            (context) =>
-                ProjectSelectionBloc(projectRepository: RepositoryFactory.getProjectRepository()),
+            (context) => ProjectSelectionBloc(
+              projectRepository: RepositoryFactory.getProjectRepository(),
+            ),
         child: ProjectSelectionScreen(),
       ),
     );

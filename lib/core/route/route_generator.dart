@@ -1,3 +1,4 @@
+import 'package:dev_task/data/repositories/platform_config_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,6 @@ import '../../presentation/screens/package_integration/package_integration_scree
 import '../../presentation/screens/platform_config/platform_config_screen.dart';
 import '../../presentation/screens/project_selection/project_selection_screen.dart';
 import '../constants/route_constants.dart';
-import '../factories/repository_factory.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -33,7 +33,7 @@ class RouteGenerator {
               (_) => BlocProvider(
                 create:
                     (_) => ProjectSelectionBloc(
-                      projectRepository: RepositoryFactory.getProjectRepository(),
+                      projectRepository: ProjectRepository(),
                     ),
                 child: ProjectSelectionScreen(),
               ),
@@ -47,7 +47,7 @@ class RouteGenerator {
                   create:
                       (_) => PackageIntegrationBloc(
                         packageIntegrationRepository:
-                            RepositoryFactory.getPackageIntegrationRepository(),
+                            PackageIntegrationRepository(),
                       ),
                   child: PackageIntegrationScreen(project: args),
                 ),
@@ -60,7 +60,7 @@ class RouteGenerator {
             builder:
                 (_) => BlocProvider(
                   create:
-                      (_) => ApiKeyBloc(apiKeyRepository: RepositoryFactory.getApiKeyRepository()),
+                      (_) => ApiKeyBloc(apiKeyRepository: ApiKeyRepository()),
                   child: ApiKeyScreen(project: args),
                 ),
           );
@@ -69,23 +69,24 @@ class RouteGenerator {
             builder:
                 (_) => BlocProvider(
                   create:
-                      (_) => ApiKeyBloc(apiKeyRepository: RepositoryFactory.getApiKeyRepository()),
+                      (_) => ApiKeyBloc(apiKeyRepository: ApiKeyRepository()),
                   child: ApiKeyScreen(project: args['project']),
                 ),
           );
         }
         return errorRoute();
 
-
       case RouteConstants.demoIntegration:
         if (args is Project) {
           return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (_) => DemoIntegrationBloc(
-                demoIntegrationRepository: RepositoryFactory.getDemoIntegrationRepository(),
-              ),
-              child: DemoIntegrationScreen(project: args),
-            ),
+            builder:
+                (_) => BlocProvider(
+                  create:
+                      (_) => DemoIntegrationBloc(
+                        demoIntegrationRepository: DemoIntegrationRepository(),
+                      ),
+                  child: DemoIntegrationScreen(project: args),
+                ),
           );
         }
         return errorRoute();
@@ -96,10 +97,11 @@ class RouteGenerator {
           final filePath = args['filePath'] as String?;
 
           return MaterialPageRoute(
-            builder: (_) => IntegrationResultScreen(
-              project: project,
-              filePath: filePath,
-            ),
+            builder:
+                (_) => IntegrationResultScreen(
+                  project: project,
+                  filePath: filePath,
+                ),
           );
         }
         return errorRoute();
@@ -107,16 +109,18 @@ class RouteGenerator {
       case RouteConstants.platformConfiguration:
         if (args is Map) {
           return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (_) => PlatformConfigBloc(
-                platformConfigRepository: RepositoryFactory.getPlatformConfigRepository(),
-              ),
-              child: PlatformConfigScreen(
-                project: args['project'] as Project,
-                apiKey: args['apiKey'] as String?,
-                isApiKeySkipped: args['isSkipped'] as bool? ?? false,
-              ),
-            ),
+            builder:
+                (_) => BlocProvider(
+                  create:
+                      (_) => PlatformConfigBloc(
+                        platformConfigRepository: PlatformConfigRepository(),
+                      ),
+                  child: PlatformConfigScreen(
+                    project: args['project'] as Project,
+                    apiKey: args['apiKey'] as String?,
+                    isApiKeySkipped: args['isSkipped'] as bool? ?? false,
+                  ),
+                ),
           );
         }
         return errorRoute();

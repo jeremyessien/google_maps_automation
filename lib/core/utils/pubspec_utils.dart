@@ -35,7 +35,7 @@ class PubspecUtils {
 
       final packageLine =
           version == null || version == 'latest'
-              ? '  $packageName: ^latest'
+              ? '  $packageName: 2.12.1'
               : '  $packageName: ^$version';
 
       final startPosition = match.end;
