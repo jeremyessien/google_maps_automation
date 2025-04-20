@@ -1,10 +1,12 @@
 // lib/presentation/screens/api_key_screen.dart
 import 'package:dev_task/data/services/navigation_service.dart';
+import 'package:dev_task/presentation/widgets/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/route_constants.dart';
 import '../../../domain/entities/projects.dart';
+import '../../../main.dart';
 import '../../blocs/api_key/api_key_bloc.dart';
 import '../../blocs/api_key/api_key_event.dart';
 import '../../blocs/api_key/api_key_state.dart';
@@ -21,7 +23,6 @@ class ApiKeyScreen extends StatefulWidget {
 
 class _ApiKeyScreenState extends State<ApiKeyScreen> {
   final apiKeyController = TextEditingController();
-  final NavigationService navigationService = NavigationService();
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
                   'Enter your Google Maps API Key:',
@@ -102,11 +104,12 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
+
+                      ActionButton(
+                        onTap: () {
                           context.read<ApiKeyBloc>().add(const SkipApiKey());
                         },
-                        child: const Text('Continue with existing API key'),
+                        title: 'Continue with existing API key',
                       ),
                     ],
                   ),
@@ -127,29 +130,33 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
 
                 const SizedBox(height: 24),
 
-                // Action buttons (validate or skip)
                 if (state.status != ApiKeyStatus.alreadyConfigured &&
                     state.status != ApiKeyStatus.checking &&
                     state.status != ApiKeyStatus.loading)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          context.read<ApiKeyBloc>().add(const SkipApiKey());
-                        },
-                        child: const Text('Skip (Not Recommended)'),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            context.read<ApiKeyBloc>().add(const SkipApiKey());
+                          },
+                          child: const Text('Skip (Not Recommended)',),
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed:
-                            apiKeyController.text.isNotEmpty
-                                ? () {
-                                  context.read<ApiKeyBloc>().add(
-                                    ValidateApiKey(apiKeyController.text),
-                                  );
-                                }
-                                : null,
-                        child: const Text('Validate & Continue'),
+
+                      Expanded(
+                        child: ActionButton(
+                          onTap:
+                              apiKeyController.text.isNotEmpty
+                                  ? () {
+                                    context.read<ApiKeyBloc>().add(
+                                      ValidateApiKey(apiKeyController.text),
+                                    );
+                                  }
+                                  : null,
+                          title: 'Validate & Continue ',
+                        ),
                       ),
                     ],
                   ),

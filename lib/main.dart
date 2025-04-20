@@ -1,5 +1,5 @@
-// lib/main.dart
 import 'package:dev_task/core/constants/route_constants.dart';
+import 'package:dev_task/core/factories/repository_factory.dart';
 import 'package:dev_task/core/route/route_generator.dart';
 import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:dev_task/presentation/blocs/project_selection/project_selection_bloc.dart';
@@ -7,15 +7,15 @@ import 'package:dev_task/presentation/screens/project_selection/project_selectio
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'data/repositories/project_repository.dart';
-
+final navigationService = NavigationService();
 void main() {
+  ///Uncomment to enable demo mode
+  // demoModeService.enableDemoMode();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final NavigationService navigationService = NavigationService();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,9 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
       home: BlocProvider(
         create:
-            (context) =>
-                ProjectSelectionBloc(projectRepository: ProjectRepository()),
+            (context) => ProjectSelectionBloc(
+              projectRepository: RepositoryFactory.getProjectRepository(),
+            ),
         child: ProjectSelectionScreen(),
       ),
     );

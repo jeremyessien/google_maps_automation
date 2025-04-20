@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../blocs/package_integration/package_integration_state.dart';
@@ -26,7 +29,7 @@ class IntegrationStatusWidget extends StatelessWidget {
                 const SizedBox(
                   width: 20,
                   height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
                 ),
                 const SizedBox(width: 12),
                 Text(state.output ?? 'Processing...'),
@@ -46,7 +49,7 @@ class IntegrationStatusWidget extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.check_circle, color: Colors.blue),
+                 Icon(Platform.isAndroid ? Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.blue),
                 const SizedBox(width: 8),
                 Text(state.output ?? 'Package is already integrated'),
               ],
@@ -65,7 +68,7 @@ class IntegrationStatusWidget extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.check_circle, color: Colors.green),
+                Icon(Platform.isAndroid ? Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.green),
                 const SizedBox(width: 8),
                 Text(state.output ?? 'Package successfully integrated'),
               ],
@@ -85,7 +88,7 @@ class IntegrationStatusWidget extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.error, color: Colors.red),
+                Icon(Platform.isAndroid ? Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.red),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(

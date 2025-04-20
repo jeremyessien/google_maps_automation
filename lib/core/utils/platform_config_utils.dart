@@ -1,5 +1,8 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:io';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class PlatformConfigUtils {
   static Future<bool> configureAndroidManifest({
@@ -75,7 +78,7 @@ class PlatformConfigUtils {
       await manifestFile.writeAsString(manifestContent);
       return true;
     } catch (e) {
-      log('Error configuring AndroidManifest.xml: $e');
+      dev.log('Error configuring AndroidManifest.xml: $e');
       return false;
     }
   }
@@ -148,7 +151,7 @@ class PlatformConfigUtils {
       await plistFile.writeAsString(plistContent);
       return true;
     } catch (e) {
-      log('Error configuring iOS Info.plist: $e');
+      dev.log('Error configuring iOS Info.plist: $e');
       return false;
     }
   }
@@ -163,27 +166,29 @@ class PlatformConfigUtils {
         return false;
       }
 
-      // Read current gradle content
       String gradleContent = await gradleFile.readAsString();
 
-      // Check if minSdkVersion is at least 20 (required for Google Maps)
       final minSdkRegex = RegExp(r'minSdkVersion\s+(\d+)');
       final match = minSdkRegex.firstMatch(gradleContent);
 
       if (match != null) {
         final currentMinSdk = int.parse(match.group(1)!);
+
         if (currentMinSdk < 20) {
           gradleContent = gradleContent.replaceFirst(
             minSdkRegex,
             'minSdkVersion 20',
           );
-          await gradleFile.writeAsString(gradleContent);
+          try {
+            await gradleFile.writeAsString(gradleContent);
+          } catch (e) {
+            debugPrint('Failed to write to build.gradle: $e');
+          }
         }
       }
 
       return true;
-    } catch (e) {
-      log('Error updating Android gradle settings: $e');
+    } catch (e, stackTrace) {
       return false;
     }
   }

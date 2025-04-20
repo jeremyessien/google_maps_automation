@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../blocs/demo_integration/demo_integration_state.dart';
@@ -19,7 +22,7 @@ class DemoIntegrationStatusWidget extends StatelessWidget {
                 SizedBox(
                   width: 16,
                   height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
                 ),
                 SizedBox(width: 16),
                 Text('Creating and integrating Google Maps example...'),
@@ -33,8 +36,9 @@ class DemoIntegrationStatusWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: const [
-                Icon(Icons.check_circle, color: Colors.green),
+              children:  [
+                Icon(Platform.isAndroid ?
+                    Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.green),
                 SizedBox(width: 16),
                 Text('Google Maps example added successfully!'),
               ],
@@ -86,7 +90,7 @@ class DemoIntegrationStatusWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.error, color: Colors.red),
+                 Icon(Platform.isAndroid ? Icons.error : CupertinoIcons.info_circle_fill, color: Colors.red),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(

@@ -1,19 +1,18 @@
-
-import 'package:process_run/process_run.dart';
-
+import 'dart:io';
 
 class ProcessUtils {
-
   static Future<String> runPubGet(String projectPath) async {
     try {
-      final shell = Shell(workingDirectory: projectPath);
-      final result = await shell.run('flutter pub get');
+      final result = await Process.run(
+        'flutter',
+        ['pub', 'get'],
+        workingDirectory: projectPath,
+        runInShell: true,
+      );
 
       String output = '';
-      for (final process in result) {
-        output += process.stdout.toString();
-        output += process.stderr.toString();
-      }
+      output += result.stdout.toString();
+      output += result.stderr.toString();
 
       return output;
     } catch (e) {

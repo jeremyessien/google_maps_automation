@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../blocs/platform_config/platform_config_state.dart';
@@ -42,7 +45,7 @@ class PlatformConfigStatusWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.error_outline, color: Colors.red.shade700),
+                Icon(Platform.isAndroid ? Icons.error_outline : CupertinoIcons.info_circle, color: Colors.red.shade700),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -66,11 +69,7 @@ class PlatformConfigStatusWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.check_circle,
-                  color: Colors.green.shade700,
-                  size: 24,
-                ),
+                Icon(Platform.isAndroid ? Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.green, size: 24,),
                 const SizedBox(width: 16),
                 const Expanded(
                   child: Text(
@@ -107,7 +106,7 @@ class PlatformConfigStatusWidget extends StatelessWidget {
               const SizedBox(
                 width: 16,
                 height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator.adaptive(strokeWidth: 2),
               ),
               const SizedBox(width: 8),
               Text('Configuring $platformName...'),
@@ -116,7 +115,7 @@ class PlatformConfigStatusWidget extends StatelessWidget {
         else if (isConfigured)
           Row(
             children: [
-              const Icon(Icons.check_circle, color: Colors.green),
+              Icon(Platform.isAndroid ? Icons.check_circle : CupertinoIcons.checkmark_alt_circle_fill, color: Colors.green),
               const SizedBox(width: 8),
               Text('$platformName configured'),
             ],
