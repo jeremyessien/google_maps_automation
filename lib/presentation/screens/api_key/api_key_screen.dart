@@ -1,5 +1,3 @@
-// lib/presentation/screens/api_key_screen.dart
-import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:dev_task/presentation/widgets/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,7 +112,6 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
                     ],
                   ),
 
-                // Show API key input when not already configured
                 if (state.status != ApiKeyStatus.alreadyConfigured &&
                     state.status != ApiKeyStatus.checking)
                   ApiKeyInputWidget(
@@ -141,7 +138,7 @@ class _ApiKeyScreenState extends State<ApiKeyScreen> {
                           onPressed: () {
                             context.read<ApiKeyBloc>().add(const SkipApiKey());
                           },
-                          child: const Text('Skip (Not Recommended)',),
+                          child: const Text('Skip (Not Recommended)'),
                         ),
                       ),
 

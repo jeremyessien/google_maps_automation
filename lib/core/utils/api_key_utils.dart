@@ -1,9 +1,7 @@
-
 import 'dart:developer';
 import 'dart:io';
 
 class ApiKeyUtils {
-
   static bool isValidApiKey(String? apiKey) {
     if (apiKey == null || apiKey.isEmpty) {
       return false;
@@ -12,11 +10,10 @@ class ApiKeyUtils {
     return apiKey.length >= 20 && !apiKey.contains(' ');
   }
 
-
   static Future<bool> isApiKeyConfiguredInAndroid(
-      String projectPath,
-      String manifestPath,
-      ) async {
+    String projectPath,
+    String manifestPath,
+  ) async {
     try {
       final file = File('$projectPath${Platform.pathSeparator}$manifestPath');
       if (!await file.exists()) {
@@ -24,7 +21,7 @@ class ApiKeyUtils {
       }
 
       final content = await file.readAsString();
-      // Look for the API key meta-data in AndroidManifest.xml
+
       return content.contains('com.google.android.geo.API_KEY') &&
           !content.contains('YOUR_API_KEY_HERE');
     } catch (e) {
@@ -33,11 +30,10 @@ class ApiKeyUtils {
     }
   }
 
-
   static Future<bool> isApiKeyConfiguredInIOS(
-      String projectPath,
-      String plistPath,
-      ) async {
+    String projectPath,
+    String plistPath,
+  ) async {
     try {
       final file = File('$projectPath${Platform.pathSeparator}$plistPath');
       if (!await file.exists()) {

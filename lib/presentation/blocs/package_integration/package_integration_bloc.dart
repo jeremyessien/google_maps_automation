@@ -1,6 +1,4 @@
-// lib/presentation/bloc/package_integration/package_integration.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../domain/repositories/i_package_repository.dart';
 import 'package_integration_event.dart';
 import 'package_integration_state.dart';
@@ -20,7 +18,6 @@ class PackageIntegrationBloc
     IntegratePackage event,
     Emitter<PackageIntegrationState> emit,
   ) async {
-
     emit(state.copyWith(status: PackageIntegrationStatus.loading));
 
     final isIntegrated = await packageIntegrationRepository.isPackageIntegrated(
@@ -37,7 +34,6 @@ class PackageIntegrationBloc
       );
       return;
     }
-
 
     emit(
       state.copyWith(

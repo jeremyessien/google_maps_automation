@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/repositories/i_api_key_repository.dart';
@@ -19,7 +18,6 @@ class ApiKeyBloc extends Bloc<ApiKeyEvent, ApiKeyState> {
     emit(
       state.copyWith(
         apiKey: event.apiKey,
-
         status: ApiKeyStatus.initial,
         isValid: false,
         errorMessage: null,

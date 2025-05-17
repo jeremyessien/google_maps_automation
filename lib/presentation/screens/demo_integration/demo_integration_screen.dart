@@ -1,4 +1,3 @@
-import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +43,9 @@ class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Center(child: Text('Google Maps example added successfully!')),
+                content: Center(
+                  child: Text('Google Maps example added successfully!'),
+                ),
                 backgroundColor: Colors.green,
               ),
             );
@@ -103,7 +104,7 @@ class _DemoIntegrationScreenState extends State<DemoIntegrationScreen> {
                       ),
                   ],
                 ),
-                SizedBox(height: 20,)
+                SizedBox(height: 20),
               ],
             ),
           );
