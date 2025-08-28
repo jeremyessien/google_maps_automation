@@ -1,0 +1,23 @@
+name: flutter_maps_integrate_cli
+description: A command-line tool for integrating Google Maps into Flutter projects
+version: 1.0.0
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  args: ^2.4.2
+  path: ^1.8.3
+  yaml: ^3.1.2
+  process_run: ^1.2.4
+  json_annotation: ^4.8.1
+  colorize: ^3.0.0
+
+dev_dependencies:
+  test: ^1.24.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.0
+  lints: ^5.0.0
+
+executables:
+  flutter_maps_integrate: main
