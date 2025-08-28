@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class PlatformConfigUtils {
   static Future<bool> configureAndroidManifest({
@@ -188,6 +188,10 @@ class PlatformConfigUtils {
 
       return true;
     } catch (e, stackTrace) {
+      if (kDebugMode) {
+        dev.log('Error updating Android build.gradle: $e');
+        dev.log('Stack trace: $stackTrace');
+      }
       return false;
     }
   }

@@ -55,7 +55,7 @@ class ApiKeyBloc extends Bloc<ApiKeyEvent, ApiKeyState> {
   Future<void> onSkipApiKey(SkipApiKey event, Emitter<ApiKeyState> emit) async {
     emit(state.copyWith(status: ApiKeyStatus.loading));
 
-    final apiKeyEntity = await apiKeyRepository.skipApiKey();
+    final _ = await apiKeyRepository.skipApiKey();
 
     emit(state.copyWith(status: ApiKeyStatus.skipped, isSkipped: true));
   }
