@@ -1,4 +1,3 @@
-import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:dev_task/presentation/widgets/action_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,9 @@ class PackageIntegrationScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Center(child: Text('Package integrated successfully!')),
+                content: Center(
+                  child: Text('Package integrated successfully!'),
+                ),
                 backgroundColor: Colors.green,
               ),
             );
@@ -86,7 +87,6 @@ class PackageIntegrationScreen extends StatelessWidget {
                 IntegrationStatusWidget(state: state),
 
                 if (state.status == PackageIntegrationStatus.alreadyIntegrated)
-
                   ActionButton(
                     onTap: () {
                       navigationService.navigateTo(
@@ -97,8 +97,7 @@ class PackageIntegrationScreen extends StatelessWidget {
                     title: 'Continue to Api Key',
                   ),
 
-
-                  SizedBox(height: 20,),
+                SizedBox(height: 20),
                 if (state.status == PackageIntegrationStatus.success)
                   ActionButton(
                     onTap: () {

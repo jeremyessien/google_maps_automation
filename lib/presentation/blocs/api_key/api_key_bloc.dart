@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/repositories/i_api_key_repository.dart';
@@ -19,7 +18,6 @@ class ApiKeyBloc extends Bloc<ApiKeyEvent, ApiKeyState> {
     emit(
       state.copyWith(
         apiKey: event.apiKey,
-
         status: ApiKeyStatus.initial,
         isValid: false,
         errorMessage: null,
@@ -57,7 +55,7 @@ class ApiKeyBloc extends Bloc<ApiKeyEvent, ApiKeyState> {
   Future<void> onSkipApiKey(SkipApiKey event, Emitter<ApiKeyState> emit) async {
     emit(state.copyWith(status: ApiKeyStatus.loading));
 
-    final apiKeyEntity = await apiKeyRepository.skipApiKey();
+    final _ = await apiKeyRepository.skipApiKey();
 
     emit(state.copyWith(status: ApiKeyStatus.skipped, isSkipped: true));
   }

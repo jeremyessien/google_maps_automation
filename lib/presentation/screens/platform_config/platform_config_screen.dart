@@ -1,5 +1,3 @@
-
-import 'package:dev_task/data/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,8 +9,6 @@ import '../../blocs/platform_config/platform_config_event.dart';
 import '../../blocs/platform_config/platform_config_state.dart';
 import '../../widgets/action_button.dart';
 import '../../widgets/platform_status_widget.dart';
-
-
 
 class PlatformConfigScreen extends StatefulWidget {
   final Project project;
@@ -31,17 +27,14 @@ class PlatformConfigScreen extends StatefulWidget {
 }
 
 class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
-
   @override
   void initState() {
     super.initState();
-
     startConfiguration();
   }
 
   void startConfiguration() {
     final apiKey = widget.apiKey ?? 'YOUR_API_KEY_HERE';
-
 
     context.read<PlatformConfigBloc>().add(
       ConfigureBothPlatforms(
@@ -54,20 +47,19 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Platform Configuration'),
-      ),
+      appBar: AppBar(title: const Text('Platform Configuration')),
       body: BlocConsumer<PlatformConfigBloc, PlatformConfigState>(
         listener: (context, state) {
           if (state.isFullyConfigured) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Center(child: Text('Platforms configured successfully!')),
+                content: Center(
+                  child: Text('Platforms configured successfully!'),
+                ),
                 backgroundColor: Colors.green,
               ),
             );
-
 
             Future.delayed(const Duration(seconds: 2), () {
               navigationService.navigateTo(
@@ -89,7 +81,6 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
 
-
                 const SizedBox(height: 16),
                 Text(
                   widget.isApiKeySkipped
@@ -99,29 +90,24 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
 
                 const SizedBox(height: 24),
 
-
                 const Text(
                   'Platform Configuration Status:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
-
                 PlatformConfigStatusWidget(state: state),
 
                 const Spacer(),
 
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     if (state.status == PlatformConfigStatus.failure)
                       ActionButton(
                         onTap: startConfiguration,
                         title: 'Retry Configuration',
                       ),
-
 
                     if (state.isFullyConfigured)
                       ActionButton(
@@ -134,10 +120,9 @@ class _PlatformConfigScreenState extends State<PlatformConfigScreen> {
                         },
                         title: 'Continue to Demo Integration',
                       ),
-
                   ],
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 20),
               ],
             ),
           );

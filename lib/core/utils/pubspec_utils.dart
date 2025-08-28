@@ -1,4 +1,3 @@
-// lib/core/utils/pubspec_utils.dart
 import 'dart:developer';
 import 'dart:io';
 
@@ -19,7 +18,6 @@ class PubspecUtils {
         multiLine: true,
       );
       if (packageRegExp.hasMatch(content)) {
-        // Package already exists
         return true;
       }
 
