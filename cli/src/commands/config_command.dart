@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:colorize/colorize.dart';
@@ -15,9 +15,7 @@ class ConfigCommand extends Command {
   String get description => 'Manage configuration files';
 
   @override
-  ArgParser get parser => argParser;
-
-  ArgParser get argParser {
+  ArgParser get parser {
     final parser = ArgParser()
       ..addCommand('init')
       ..addCommand('show')
@@ -29,7 +27,7 @@ class ConfigCommand extends Command {
 
   @override
   Future<void> execute(List<String> arguments) async {
-    final results = argParser.parse(arguments);
+    final results = parser.parse(arguments);
 
     if (results.command == null) {
       _showHelp();
@@ -57,17 +55,17 @@ class ConfigCommand extends Command {
 
     try {
       final configFile = await ConfigService.createDefaultConfig(configPath);
-      log(
+      print(
         Colorize(
           '✅ Configuration file created successfully!',
         ).green().toString(),
       );
-      log('Location: ${configFile.path}');
-      log('');
-      log('Edit this file to customize your settings, then run:');
-      log('  flutter_maps_integrate config validate');
+      print('Location: ${configFile.path}');
+      print('');
+      print('Edit this file to customize your settings, then run:');
+      print('  flutter_maps_integrate config validate');
     } catch (e) {
-      log(
+      print(
         Colorize('❌ Failed to create configuration file: $e').red().toString(),
       );
     }
@@ -83,7 +81,7 @@ class ConfigCommand extends Command {
       if (configPath != null) {
         configFile = File(configPath);
         if (!configFile.existsSync()) {
-          log(
+          print(
             Colorize(
               '❌ Configuration file not found: $configPath',
             ).red().toString(),
@@ -93,29 +91,29 @@ class ConfigCommand extends Command {
       } else {
         configFile = ConfigService.findConfigFile();
         if (configFile == null) {
-          log(
+          print(
             Colorize(
               '❌ No configuration file found in current directory or parents',
             ).red().toString(),
           );
-          log('');
-          log('Create a new configuration file with:');
-          log('  flutter_maps_integrate config init');
+          print('');
+          print('Create a new configuration file with:');
+          print('  flutter_maps_integrate config init');
           return;
         }
       }
 
       final config = await ConfigService.loadConfig(configFile);
 
-      log(
+      print(
         Colorize(
           'Configuration File: ${configFile.path}',
         ).bold().blue().toString(),
       );
-      log('');
+      print('');
       _printConfig(config);
     } catch (e) {
-      log(Colorize('❌ Failed to load configuration: $e').red().toString());
+      print(Colorize('❌ Failed to load configuration: $e').red().toString());
     }
   }
 
@@ -129,7 +127,7 @@ class ConfigCommand extends Command {
       if (configPath != null) {
         configFile = File(configPath);
         if (!configFile.existsSync()) {
-          log(
+          print(
             Colorize(
               '❌ Configuration file not found: $configPath',
             ).red().toString(),
@@ -139,7 +137,7 @@ class ConfigCommand extends Command {
       } else {
         configFile = ConfigService.findConfigFile();
         if (configFile == null) {
-          log(Colorize('❌ No configuration file found').red().toString());
+          print(Colorize('❌ No configuration file found').red().toString());
           return;
         }
       }
@@ -147,61 +145,61 @@ class ConfigCommand extends Command {
       final config = await ConfigService.loadConfig(configFile);
       ConfigService.validateConfig(config);
 
-      log(Colorize('✅ Configuration is valid!').green().toString());
-      log('File: ${configFile.path}');
+      print(Colorize('✅ Configuration is valid!').green().toString());
+      print('File: ${configFile.path}');
     } catch (e) {
-      log(Colorize('❌ Configuration validation failed: $e').red().toString());
+      print(Colorize('❌ Configuration validation failed: $e').red().toString());
     }
   }
 
   /// Print configuration in a readable format
   void _printConfig(Config config) {
-    log('Project:');
-    log('  Path: ${config.project.path}');
-    log('  Name: ${config.project.name ?? 'Auto-detected'}');
-    log('');
+    print('Project:');
+    print('  Path: ${config.project.path}');
+    print('  Name: ${config.project.name ?? 'Auto-detected'}');
+    print('');
 
-    log('API Keys:');
-    log('  Android: ${config.apiKey.android ?? 'Not set'}');
-    log('  iOS: ${config.apiKey.ios ?? 'Not set'}');
-    log('  Skip Validation: ${config.apiKey.skipValidation}');
-    log('');
+    print('API Keys:');
+    print('  Android: ${config.apiKey.android ?? 'Not set'}');
+    print('  iOS: ${config.apiKey.ios ?? 'Not set'}');
+    print('  Skip Validation: ${config.apiKey.skipValidation}');
+    print('');
 
-    log('Platforms:');
-    log('  Android: ${config.platforms.android}');
-    log('  iOS: ${config.platforms.ios}');
-    log('  Min SDK Version: ${config.platforms.minSdkVersion}');
-    log('');
+    print('Platforms:');
+    print('  Android: ${config.platforms.android}');
+    print('  iOS: ${config.platforms.ios}');
+    print('  Min SDK Version: ${config.platforms.minSdkVersion}');
+    print('');
 
-    log('Integration:');
-    log('  Add Demo: ${config.integration.addDemo}');
-    log('  Backup Files: ${config.integration.backupFiles}');
-    log('  Dry Run: ${config.integration.dryRun}');
-    log('');
+    print('Integration:');
+    print('  Add Demo: ${config.integration.addDemo}');
+    print('  Backup Files: ${config.integration.backupFiles}');
+    print('  Dry Run: ${config.integration.dryRun}');
+    print('');
 
-    log('Output:');
-    log('  Verbose: ${config.output.verbose}');
-    log('  Log File: ${config.output.logFile ?? 'None'}');
-    log('  Format: ${config.output.format}');
+    print('Output:');
+    print('  Verbose: ${config.output.verbose}');
+    print('  Log File: ${config.output.logFile ?? 'None'}');
+    print('  Format: ${config.output.format}');
   }
 
   /// Show help for config command
   void _showHelp() {
-    log(Colorize('Config Command Help').bold().green().toString());
-    log('');
-    log('Usage: flutter_maps_integrate config <subcommand> [options]');
-    log('');
-    log('Subcommands:');
-    log('  init     Create a new configuration file with default values');
-    log('  show     Display current configuration');
-    log('  validate Check if configuration is valid');
-    log('');
-    log('Options:');
-    log('  --file, -f    Path to configuration file');
-    log('');
-    log('Examples:');
-    log('  flutter_maps_integrate config init');
-    log('  flutter_maps_integrate config show');
-    log('  flutter_maps_integrate config validate');
+    print(Colorize('Config Command Help').bold().green().toString());
+    print('');
+    print('Usage: flutter_maps_integrate config <subcommand> [options]');
+    print('');
+    print('Subcommands:');
+    print('  init     Create a new configuration file with default values');
+    print('  show     Display current configuration');
+    print('  validate Check if configuration is valid');
+    print('');
+    print('Options:');
+    print('  --file, -f    Path to configuration file');
+    print('');
+    print('Examples:');
+    print('  flutter_maps_integrate config init');
+    print('  flutter_maps_integrate config show');
+    print('  flutter_maps_integrate config validate');
   }
 }
