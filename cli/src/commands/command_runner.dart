@@ -1,8 +1,9 @@
-import 'dart:developer';
-
 import 'package:colorize/colorize.dart';
 
 import 'command.dart';
+import 'config_command.dart';
+import 'integrate_command.dart';
+import 'validate_command.dart';
 
 class CommandRunner {
   final bool verbose;
@@ -15,6 +16,7 @@ class CommandRunner {
   void _registerCommands() {
     registerCommand(ValidateCommand());
     registerCommand(ConfigCommand());
+    registerCommand(IntegrateCommand());
   }
 
   void registerCommand(Command command) {
@@ -44,8 +46,8 @@ class CommandRunner {
     }
     try {
       if (verbose) {
-        log('${Colorize('Running command: $commandName').yellow}');
-        log('${Colorize('Arguments: ${commandArgs.join(' ')}').yellow}');
+        print('${Colorize('Running command: $commandName').yellow}');
+        print('${Colorize('Arguments: ${commandArgs.join(' ')}').yellow}');
       }
 
       await command.execute(commandArgs);
@@ -55,37 +57,37 @@ class CommandRunner {
   }
 
   void _showHelp() {
-    log("${Colorize('Available commands:').bold().green}");
-    log("");
+    print("${Colorize('Available commands:').bold().green}");
+    print("");
     if (_commands.isEmpty) {
-      log(
+      print(
         'No commands available. Please check the documentation for available commands.',
       );
       return;
     } else {
       for (final entry in _commands.entries) {
-        log("  ${entry.key.padRight(15)} ${entry.value.description}");
+        print("  ${entry.key.padRight(15)} ${entry.value.description}");
       }
     }
 
-    log('');
-    log(
+    print('');
+    print(
       'For detailed help on specific commands, use "flutter_maps_integrate <command> --help"',
     );
   }
 
   void _showUnknownCommand(String commandName) {
-    log('${Colorize('Unknown command: $commandName').red}');
-    log('');
-    log('Available commands:');
+    print('${Colorize('Unknown command: $commandName').red}');
+    print('');
+    print('Available commands:');
     _showHelp();
   }
 
   void _handleCommandError(String commandName, dynamic error) {
-    log("${Colorize('Error executing command: $commandName : $error').red}");
+    print("${Colorize('Error executing command: $commandName : $error').red}");
     if (verbose) {
-      log('${Colorize('Stack trace:').yellow}');
-      log(error);
+      print('${Colorize('Stack trace:').yellow}');
+      print(error);
     }
   }
 }
