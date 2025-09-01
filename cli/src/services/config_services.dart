@@ -34,8 +34,8 @@ class ConfigService {
     try {
       final content = await configFile.readAsString();
       final yamlMap = loadYaml(content) as Map<String, dynamic>;
-      final json = _yamlToJson(yamlMap); //todod: create method
-      return Config.fromJson(json);
+      final json = _yamlToJson(yamlMap);
+      return Config.fromMap(json);
     } catch (e) {
       throw Exception('Failed to load config from $configFile: $e');
     }
@@ -43,7 +43,7 @@ class ConfigService {
 
   static Future<void> saveConfig(Config config, File configFile) async {
     try {
-      final jsonMap = config.toJson();
+      final jsonMap = config.toMap();
       final yamlString = _jsonToYaml(jsonMap);
       await configFile.writeAsString(yamlString);
     } catch (e) {
@@ -90,7 +90,9 @@ class ConfigService {
   static dynamic _yamlToJson(dynamic yaml) {
     if (yaml is Map) {
       return Map<String, dynamic>.fromEntries(
-        yaml.entries.map((e) => MapEntry(e.key.toString(), _yamlToJson(e.value)))
+        yaml.entries.map(
+          (e) => MapEntry(e.key.toString(), _yamlToJson(e.value)),
+        ),
       );
     } else if (yaml is List) {
       return yaml.map((e) => _yamlToJson(e)).toList();
@@ -99,21 +101,25 @@ class ConfigService {
     }
   }
 
-static String _jsonToYaml(Map<String, dynamic> json) {
+  static String _jsonToYaml(Map<String, dynamic> json) {
     // Simple YAML conversion - in a real app, you might want a more robust solution
     final buffer = StringBuffer();
     _writeYamlMap(json, buffer, 0);
     return buffer.toString();
   }
-  
+
   /// Recursively write YAML map
-  static void _writeYamlMap(Map<String, dynamic> map, StringBuffer buffer, int indent) {
+  static void _writeYamlMap(
+    Map<String, dynamic> map,
+    StringBuffer buffer,
+    int indent,
+  ) {
     final indentStr = '  ' * indent;
-    
+
     for (final entry in map.entries) {
       final key = entry.key;
       final value = entry.value;
-      
+
       if (value is Map<String, dynamic>) {
         buffer.writeln('$indentStr$key:');
         _writeYamlMap(value, buffer, indent + 1);
@@ -126,10 +132,8 @@ static String _jsonToYaml(Map<String, dynamic> json) {
         buffer.writeln('$indentStr$key: $value');
       }
     }
+  }
 }
-}
-
-
 
 class ConfigException implements Exception {
   final String message;
