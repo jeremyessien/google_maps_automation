@@ -1,11 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'config.g.dart';
-
 /// Main configuration class for the Flutter Maps Integration CLI
 ///
 /// This class represents the complete configuration that can be saved
 /// to and loaded from a YAML file
-@JsonSerializable()
 class Config {
   /// Project-specific configuration
   final ProjectConfig project;
@@ -41,15 +37,40 @@ class Config {
     );
   }
 
-  /// Create from JSON
-  factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
+  /// Convert to Map for YAML serialization
+  Map<String, dynamic> toMap() {
+    return {
+      'project': project.toMap(),
+      'apiKey': apiKey.toMap(),
+      'platforms': platforms.toMap(),
+      'integration': integration.toMap(),
+      'output': output.toMap(),
+    };
+  }
 
-  /// Convert to JSON
-  Map<String, dynamic> toJson() => _$ConfigToJson(this);
+  /// Create from Map (from YAML deserialization)
+  factory Config.fromMap(Map<String, dynamic> map) {
+    return Config(
+      project: ProjectConfig.fromMap(
+        map['project'] as Map<String, dynamic>? ?? {},
+      ),
+      apiKey: ApiKeyConfig.fromMap(
+        map['apiKey'] as Map<String, dynamic>? ?? {},
+      ),
+      platforms: PlatformConfig.fromMap(
+        map['platforms'] as Map<String, dynamic>? ?? {},
+      ),
+      integration: IntegrationConfig.fromMap(
+        map['integration'] as Map<String, dynamic>? ?? {},
+      ),
+      output: OutputConfig.fromMap(
+        map['output'] as Map<String, dynamic>? ?? {},
+      ),
+    );
+  }
 }
 
 /// Project-specific configuration
-@JsonSerializable()
 class ProjectConfig {
   /// Path to the Flutter project
   final String path;
@@ -63,13 +84,19 @@ class ProjectConfig {
     return const ProjectConfig(path: './');
   }
 
-  factory ProjectConfig.fromJson(Map<String, dynamic> json) =>
-      _$ProjectConfigFromJson(json);
-  Map<String, dynamic> toJson() => _$ProjectConfigToJson(this);
+  Map<String, dynamic> toMap() {
+    return {'path': path, if (name != null) 'name': name};
+  }
+
+  factory ProjectConfig.fromMap(Map<String, dynamic> map) {
+    return ProjectConfig(
+      path: map['path'] as String? ?? './',
+      name: map['name'] as String?,
+    );
+  }
 }
 
 /// API key configuration
-@JsonSerializable()
 class ApiKeyConfig {
   /// Android API key
   final String? android;
@@ -86,13 +113,24 @@ class ApiKeyConfig {
     return const ApiKeyConfig();
   }
 
-  factory ApiKeyConfig.fromJson(Map<String, dynamic> json) =>
-      _$ApiKeyConfigFromJson(json);
-  Map<String, dynamic> toJson() => _$ApiKeyConfigToJson(this);
+  Map<String, dynamic> toMap() {
+    return {
+      if (android != null) 'android': android,
+      if (ios != null) 'ios': ios,
+      'skipValidation': skipValidation,
+    };
+  }
+
+  factory ApiKeyConfig.fromMap(Map<String, dynamic> map) {
+    return ApiKeyConfig(
+      android: map['android'] as String?,
+      ios: map['ios'] as String?,
+      skipValidation: map['skipValidation'] as bool? ?? false,
+    );
+  }
 }
 
 /// Platform-specific configuration
-@JsonSerializable()
 class PlatformConfig {
   /// Enable Android configuration
   final bool android;
@@ -113,13 +151,20 @@ class PlatformConfig {
     return const PlatformConfig();
   }
 
-  factory PlatformConfig.fromJson(Map<String, dynamic> json) =>
-      _$PlatformConfigFromJson(json);
-  Map<String, dynamic> toJson() => _$PlatformConfigToJson(this);
+  Map<String, dynamic> toMap() {
+    return {'android': android, 'ios': ios, 'minSdkVersion': minSdkVersion};
+  }
+
+  factory PlatformConfig.fromMap(Map<String, dynamic> map) {
+    return PlatformConfig(
+      android: map['android'] as bool? ?? true,
+      ios: map['ios'] as bool? ?? true,
+      minSdkVersion: map['minSdkVersion'] as int? ?? 20,
+    );
+  }
 }
 
 /// Integration configuration
-@JsonSerializable()
 class IntegrationConfig {
   /// Add demo code to project
   final bool addDemo;
@@ -140,13 +185,20 @@ class IntegrationConfig {
     return const IntegrationConfig();
   }
 
-  factory IntegrationConfig.fromJson(Map<String, dynamic> json) =>
-      _$IntegrationConfigFromJson(json);
-  Map<String, dynamic> toJson() => _$IntegrationConfigToJson(this);
+  Map<String, dynamic> toMap() {
+    return {'addDemo': addDemo, 'backupFiles': backupFiles, 'dryRun': dryRun};
+  }
+
+  factory IntegrationConfig.fromMap(Map<String, dynamic> map) {
+    return IntegrationConfig(
+      addDemo: map['addDemo'] as bool? ?? true,
+      backupFiles: map['backupFiles'] as bool? ?? true,
+      dryRun: map['dryRun'] as bool? ?? false,
+    );
+  }
 }
 
 /// Output and logging configuration
-@JsonSerializable()
 class OutputConfig {
   /// Enable verbose output
   final bool verbose;
@@ -167,7 +219,19 @@ class OutputConfig {
     return const OutputConfig();
   }
 
-  factory OutputConfig.fromJson(Map<String, dynamic> json) =>
-      _$OutputConfigFromJson(json);
-  Map<String, dynamic> toJson() => _$OutputConfigToJson(this);
+  Map<String, dynamic> toMap() {
+    return {
+      'verbose': verbose,
+      if (logFile != null) 'logFile': logFile,
+      'format': format,
+    };
+  }
+
+  factory OutputConfig.fromMap(Map<String, dynamic> map) {
+    return OutputConfig(
+      verbose: map['verbose'] as bool? ?? false,
+      logFile: map['logFile'] as String?,
+      format: map['format'] as String? ?? 'text',
+    );
+  }
 }
